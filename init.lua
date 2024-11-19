@@ -267,9 +267,6 @@ require('lazy').setup({
         view = {
           width = 30, -- Adjust the width as needed
           side = 'left', -- 'left' or 'right'
-          mappings = {
-            custom_only = false, -- Use default mappings or customize as needed
-          },
         },
         renderer = {
           highlight_git = true, -- Highlight files with Git changes
