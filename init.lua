@@ -231,7 +231,6 @@ require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-  'windwp/nvim-autopairs',
   'nvim-tree/nvim-tree.lua',
   -- Useful development and productivity plugins
   'nvim-telescope/telescope.nvim', -- Fuzzy finder for files, buffers, and more
@@ -244,6 +243,13 @@ require('lazy').setup({
   'nvim-treesitter/nvim-treesitter', -- Syntax highlighting and code structure
   'folke/tokyonight.nvim', -- Popular color scheme
 
+  {
+    'windwp/nvim-autopairs',
+    event = 'InsertEnter',
+    config = true,
+    -- use opts = {} for passing setup options
+    -- this is equivalent to setup({}) function
+  },
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
     opts = {
@@ -259,17 +265,11 @@ require('lazy').setup({
 
   { -- Configuration for nvim-tree.lua
     'nvim-tree/nvim-tree.lua',
-    requires = {
-      'nvim-tree/nvim-web-devicons', -- optional, for file icons
-    },
     config = function()
       require('nvim-tree').setup {
         view = {
           width = 30, -- Adjust the width as needed
           side = 'left', -- 'left' or 'right'
-          mappings = {
-            custom_only = false, -- Use default mappings or customize as needed
-          },
         },
         renderer = {
           highlight_git = true, -- Highlight files with Git changes
@@ -292,7 +292,6 @@ require('lazy').setup({
       }
     end,
   },
-
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
   -- This is often very useful to both group configuration, as well as handle
@@ -983,7 +982,7 @@ require('lazy').setup({
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
-    -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
+    -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons: table
     icons = vim.g.have_nerd_font and {} or {
       cmd = '⌘',
       config = '🛠',
@@ -1004,3 +1003,8 @@ require('lazy').setup({
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+-- Shorten tab commands
+vim.cmd 'command! Tnew tabnew'
+vim.cmd 'command! Tc tabclose'
+vim.cmd 'command! Tp tabprev'
+vim.cmd 'command! Tn tabnext'
