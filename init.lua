@@ -157,6 +157,8 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+vim.opt.tabstop = 4
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -189,6 +191,8 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -280,19 +284,11 @@ require('lazy').setup({
     config = function()
       require('nvim-tree').setup {
         view = {
-          width = 30, -- Adjust the width as needed
+          width = 40, -- Adjust the width as needed
           side = 'left', -- 'left' or 'right'
         },
         renderer = {
           highlight_git = true, -- Highlight files with Git changes
-          icons = {
-            show = {
-              git = true,
-              folder = true,
-              file = true,
-              folder_arrow = true,
-            },
-          },
         },
         filters = {
           dotfiles = false, -- Set to true to hide dotfiles
@@ -688,15 +684,20 @@ require('lazy').setup({
                 checkThirdParty = false,
                 telemetry = { enable = false },
                 library = {
-                "${3rd}/love2d/library"
-              }
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
+                  '${3rd}/love2d/library', -- Ensure the Love2D library is included
+                  vim.fn.expand('$VIMRUNTIME/lua'), -- Include Neovim runtime files
+                  vim.fn.stdpath('config') .. '/lua', -- Include user config files
+                },
+              },
+              diagnostics = {
+                globals = { 'vim', 'love' }, -- Add vim and love to recognized globals
+                disable = { 'missing-fields' }, -- Optionally disable noisy warnings
+              },
             },
           },
         },
+        
       }
-    }
       -- Ensure the servers and tools above are installed
       --  To check the current status of installed tools and/or manually install
       --  other tools, you can run
@@ -835,16 +836,12 @@ require('lazy').setup({
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
 
-          -- Accept ([y]es) the completion.
-          --  This will auto-import if your LSP supports it.
-          --  This will expand snippets if the LSP sent a snippet.
-          ['<C-y>'] = cmp.mapping.confirm { select = true },
-
+    
           -- If you prefer more traditional completion keymaps,
           -- you can uncomment the following lines
-          --['<CR>'] = cmp.mapping.confirm { select = true },
-          --['<Tab>'] = cmp.mapping.select_next_item(),
-          --['<S-Tab>'] = cmp.mapping.select_prev_item(),
+          ['<CR>'] = cmp.mapping.confirm { select = true },
+          ['<Tab>'] = cmp.mapping.select_next_item(),
+          ['<S-Tab>'] = cmp.mapping.select_prev_item(),
 
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
@@ -1026,3 +1023,4 @@ vim.cmd 'command! Tnew tabnew'
 vim.cmd 'command! Tc tabclose'
 vim.cmd 'command! Tp tabprev'
 vim.cmd 'command! Tn tabnext'
+vim.cmd 'command! Tree NvimTreeToggle'
