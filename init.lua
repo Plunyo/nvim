@@ -158,6 +158,7 @@ vim.opt.cursorline = true
 vim.opt.scrolloff = 10
 
 vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -685,8 +686,8 @@ require('lazy').setup({
                 telemetry = { enable = false },
                 library = {
                   '${3rd}/love2d/library', -- Ensure the Love2D library is included
-                  vim.fn.expand('$VIMRUNTIME/lua'), -- Include Neovim runtime files
-                  vim.fn.stdpath('config') .. '/lua', -- Include user config files
+                  vim.fn.expand '$VIMRUNTIME/lua', -- Include Neovim runtime files
+                  vim.fn.stdpath 'config' .. '/lua', -- Include user config files
                 },
               },
               diagnostics = {
@@ -696,7 +697,6 @@ require('lazy').setup({
             },
           },
         },
-        
       }
       -- Ensure the servers and tools above are installed
       --  To check the current status of installed tools and/or manually install
@@ -836,7 +836,6 @@ require('lazy').setup({
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
 
-    
           -- If you prefer more traditional completion keymaps,
           -- you can uncomment the following lines
           ['<CR>'] = cmp.mapping.confirm { select = true },
